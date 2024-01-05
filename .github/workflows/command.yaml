@@ -1,27 +1,39 @@
-name: Retest Action on PR Comment
+name: Command
 
-on:
-  issue_comment:
-    types: [created]
-
+# NB: **ALL** commands should be permissionless and only use an app token or relevant secrets
+#   specific to their requirements!
 permissions:
   contents: read
 
+on:
+  issue_comment:
+    types:
+    - created
+
+env:
+  CI_DEBUG: ${{ vars.CI_DEBUG }}
+
+
 jobs:
-  retest:
-    if: |
+  # For speed and _security_ only a single command (first matching) will be parsed/run from a comment
+  command:
+    name: Parse and run command
+    runs-on: ubuntu-22.04
+    if: >-
       ${{
          github.event.issue.pull_request
-         && github.repository == 'envoyproxy/XXgateway'
          && github.actor != 'repokitteh-read-only[bot]'
          && github.actor != 'dependabot[bot]'
       }}
-    name: Retest
-    runs-on: ubuntu-22.04
-    permissions:
-      pull-requests: write
-      actions: write
     steps:
-      - uses: envoyproxy/toolshed/gh-actions/retest@effeefe9b275dc8056f77c0e7b1010c252167d3e # actions-v0.0.2
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+    # /retest
+    - uses: envoyproxy/toolshed/gh-actions/appauth@2071e841a713d9ba2c22f9cd49d51a32fb249fa9  # actions-v0.2.20
+      id: appauth-retest
+      name: Appauth (retest)
+      with:
+        key: ${{ secrets.ENVOY_CI_APP_KEY }}
+        app_id: ${{ secrets.ENVOY_CI_APP_ID }}
+    - uses: envoyproxy/toolshed/gh-actions/retest@2071e841a713d9ba2c22f9cd49d51a32fb249fa9  # actions-v0.2.20
+      name: Retest
+      with:
+        token: ${{ steps.appauth-retest.outputs.token }}
