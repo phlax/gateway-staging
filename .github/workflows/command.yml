@@ -22,8 +22,6 @@ jobs:
     if: >-
       ${{
          github.event.issue.pull_request
-         && (vars.ENVOY_CI
-             || github.repository == 'envoyproxy/envoy')
          && github.actor != 'repokitteh-read-only[bot]'
          && github.actor != 'dependabot[bot]'
       }}
