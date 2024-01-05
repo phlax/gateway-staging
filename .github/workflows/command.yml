@@ -27,13 +27,13 @@ jobs:
       }}
     steps:
     # /retest
-    - uses: envoyproxy/toolshed/gh-actions/appauth@f49c877ba4ab9c71385f38f77faf4ce61a71f2bc  # actions-v0.2.20
+    - uses: envoyproxy/toolshed/gh-actions/appauth@89d545d1a36d5ed4aa70f48a4386283ef83abd97  # actions-v0.2.20
       id: appauth-retest
       name: Appauth (retest)
       with:
         key: ${{ secrets.ENVOY_CI_APP_KEY }}
         app_id: ${{ secrets.ENVOY_CI_APP_ID }}
-    - uses: envoyproxy/toolshed/gh-actions/retest@f49c877ba4ab9c71385f38f77faf4ce61a71f2bc  # actions-v0.2.20
+    - uses: envoyproxy/toolshed/gh-actions/retest@89d545d1a36d5ed4aa70f48a4386283ef83abd97  # actions-v0.2.20
       name: Retest
       with:
         token: ${{ steps.appauth-retest.outputs.token }}
