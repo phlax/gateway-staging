@@ -34,7 +34,6 @@ jobs:
         key: ${{ secrets.ENVOY_CI_APP_KEY }}
         app_id: ${{ secrets.ENVOY_CI_APP_ID }}
     - uses: envoyproxy/toolshed/gh-actions/retest@627e8f6225328f14a0ecabc98033c80a86b7a1d0  # actions-v0.2.20
-      if: ${{ steps.command.outputs.command == 'retest' }}
       name: Retest
       with:
         token: ${{ steps.appauth-retest.outputs.token }}
