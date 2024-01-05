@@ -1,7 +1,5 @@
 name: Command
 
-# NB: **ALL** commands should be permissionless and only use an app token or relevant secrets
-#   specific to their requirements!
 permissions:
   contents: read
 
@@ -17,6 +15,9 @@ env:
 jobs:
   # For speed and _security_ only a single command (first matching) will be parsed/run from a comment
   command:
+    permissions:
+      checks: write
+
     name: Parse and run command
     runs-on: ubuntu-22.04
     if: >-
