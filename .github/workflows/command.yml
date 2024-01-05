@@ -37,4 +37,3 @@ jobs:
       name: Retest
       with:
         token: ${{ steps.appauth-retest.outputs.token }}
-        app-owner: ci-envoy-phlax
